@@ -15,5 +15,5 @@ export function createTextNode(text: string): HtmlNode {
 
 export function createElementNode(name: string, attrs: AttrMap, children: HtmlNode[]): HtmlNode {
   const elementData = new ElementData(name, attrs);
-  return new HtmlNode(elementData, []);
+  return new HtmlNode(elementData, children);
 }
