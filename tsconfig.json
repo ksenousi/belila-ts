@@ -6,6 +6,5 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "baseUrl": "src",
-    "paths": {}
   }
 }
