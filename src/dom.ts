@@ -1,19 +1,32 @@
-export type AttrMap = Map<String, String>;
-type NodeType = string | ElementData;
+export type AttrMap = Map<string, string>;
+type NodeBody = string | ElementData;
 
-export class HtmlNode {
-  constructor(private node_type: NodeType, private children: HtmlNode[]) {}
+export interface HtmlNode {
+  body: NodeBody;
+  children: HtmlNode[];
 }
 
 export class ElementData {
-  constructor(private tag_name: string, private attributes: AttrMap) {}
+  constructor(public tag_name: string, public attributes: AttrMap) {}
+  id(): string | undefined {
+    return this.attributes.get('id');
+  }
+
+  classes(): Set<string> {
+    const classlist: string | undefined = this.attributes.get('class');
+    return classlist ? new Set(classlist.split(' ')) : new Set();
+  }
 }
 
-export function createTextNode(text: string): HtmlNode {
-  return new HtmlNode(text, []);
+export class TextNode implements HtmlNode {
+  public children: HtmlNode[] = [];
+  constructor(public body: string) {}
 }
 
-export function createElementNode(name: string, attrs: AttrMap, children: HtmlNode[]): HtmlNode {
-  const elementData = new ElementData(name, attrs);
-  return new HtmlNode(elementData, children);
+export class ElementNode implements HtmlNode {
+  body: ElementData;
+
+  constructor(name: string, attrs: AttrMap, public children: HtmlNode[]) {
+    this.body = new ElementData(name, attrs);
+  }
 }
